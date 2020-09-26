@@ -4,15 +4,38 @@ using UnityEngine;
 
 public class CharacterControl : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float MovementSpeed = 1;
+    public float JumpForce = 1;
+    public float sizeofCharacter;
+
+    private Rigidbody2D rb;
+
+    private void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        //Yürüme
+        transform.position += new Vector3(Input.GetAxis("Horizontal"), 0, 0) * Time.deltaTime * MovementSpeed; 
+
+        //zıplama
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
+        {
+            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+        }
+
+        //Karakteri Döndürme
+        Vector3 characterScale = transform.localScale;
+        if(Input.GetAxis("Horizontal") < 0)
+        {
+            characterScale.x = -sizeofCharacter;
+        }
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            characterScale.x = sizeofCharacter;
+        }
+        transform.localScale = characterScale;
     }
 }
