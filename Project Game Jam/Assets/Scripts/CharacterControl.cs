@@ -7,6 +7,9 @@ public class CharacterControl : MonoBehaviour
     public float MovementSpeed = 1;
     public float JumpForce = 1;
     public float sizeofCharacter;
+    private float HorizontalMove;
+
+    public Animator animator;
 
     private Rigidbody2D rb;
 
@@ -18,7 +21,10 @@ public class CharacterControl : MonoBehaviour
     void Update()
     {
         //Yürüme
-        transform.position += new Vector3(Input.GetAxis("Horizontal"), 0, 0) * Time.deltaTime * MovementSpeed; 
+        transform.position += new Vector3(Input.GetAxis("Horizontal"), 0, 0) * Time.deltaTime * MovementSpeed;
+
+        HorizontalMove = Input.GetAxis("Horizontal") * MovementSpeed;
+        animator.SetFloat("Speed", Mathf.Abs(HorizontalMove));
 
         //zıplama
         if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
